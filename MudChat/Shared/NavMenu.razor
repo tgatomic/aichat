@@ -1,0 +1,15 @@
+﻿<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
+     <MudNavLink Href="chat" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Chat</MudNavLink>
+    <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch data</MudNavLink>
+
+    <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_theme" />
+    <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Toggle Light/Dark Mode" />
+</MudNavMenu>
+
+
+@code {
+    private MudTheme _theme = new();
+    private bool _isDarkMode = true;
+}

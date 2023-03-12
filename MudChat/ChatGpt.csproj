@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AI.Dev.OpenAI.GPT" Version="1.0.2" />
+		<PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.7.2" />
+		<PackageReference Include="Flurl" Version="3.0.7" />
+		<PackageReference Include="Flurl.Http" Version="3.2.4" />
+		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.7" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+		<PackageReference Include="MudBlazor" Version="6.1.9" />
+		<PackageReference Include="MudBlazor.Markdown" Version="0.1.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+	
+	
+</Project>

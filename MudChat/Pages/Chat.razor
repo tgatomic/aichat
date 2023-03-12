@@ -1,0 +1,93 @@
+﻿@page "/chat/{ContactId}"
+@page "/chat"
+
+@inject IJSRuntime jsRuntime
+@inject IHttpClientFactory ClientFactory
+
+<div class="d-flex flex-grow-1 flex-row">
+    <MudPaper Elevation="25" Class="py-4 flex-grow-1">
+        <MudToolBar Dense="true">
+            <MudIcon Icon="@Icons.Material.Outlined.ChatBubble" Style="margin-right:10px"></MudIcon>
+            <MudText Typo="Typo.h6">Chat</MudText>
+        </MudToolBar>
+
+        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+
+            @foreach (var message in messages)
+            {
+                <div class="d-flex flex-row my-4 @((message.User == false) ? "" : "flex-row-reverse")">
+                    <div>
+                        <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.CreatedAt.ToString("dd MMM, yyyy hh:mm tt ")</MudText>
+
+                        @if (message.User == true)
+                        {
+                            <MudText Typo="Typo.body2" Style="@($"padding: 15px;color:{Colors.Grey.Lighten4}; background:{Colors.LightBlue.Lighten1};border-radius: 5px;margin-top:5px")">@message.Content</MudText>
+                        }
+                        else
+                        {
+                            <MudMarkdown CodeBlockTheme="CodeBlockTheme.DarculaBase16" Value="@message.Content" />
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@TokensUsed</MudText>
+        
+        <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+            <MudTextField T="string" Placeholder="Enter your message..." Lines="5" DisableUnderLine="true" Class="mt-n2 mx-4"
+                          @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)"
+                          @ref="inputField"
+                          @onkeyup="@HandleKeyUp"
+                          @onkeydown="@HandleKeyDown" />
+            <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+        </MudPaper>
+
+    </MudPaper>
+    <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px" MaxWidth="350px">
+        <MudToolBar Dense="true">
+            <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+            <MudText Typo="Typo.h6">History</MudText>
+        </MudToolBar>
+        <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
+            <MudList Clickable="true">
+                @foreach (var user in ConversationHistory)
+                {
+                    @if (user.Selected == false)
+                    {
+                        <MudPaper Elevation="25">
+                            <MudListItem Style="@($"padding: 15px;border-radius: 5px;margin-top:5px")" Class="pa-0 px-2" OnClick="@(() => LoadUserChat(user.Id))">
+                                <div class="d-flex flex-row mt-n1 mb-n1">
+                                    <div>
+                                        <MudText Typo="Typo.body2" Class="mt-3 mb-n2">@user.Title</MudText>
+                                        <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@user.CreatedAt</MudText>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <MudButton StartIcon="@Icons.Material.Outlined.RemoveCircleOutline" Color="Color.Secondary" ButtonType="ButtonType.Button" OnClick="@(() => DeleteConversation(user.Id))"></MudButton>
+                                    </div>
+                                </div>
+                            </MudListItem>
+
+                        </MudPaper>
+
+                    } 
+                    else
+                    {
+                        <MudListItem Style="@($"padding: 15px;color:{Colors.Grey.Lighten4}; background:{Colors.LightBlue.Lighten1};border-radius: 5px;margin-top:5px")" Class="pa-0 px-2" OnClick="@(() => LoadUserChat(user.Id))">
+                            <div class="d-flex flex-row mt-n1 mb-n1">
+                                <div>
+                                    <MudText Typo="Typo.body2" Class="mt-3 mb-n2">@user.Title</MudText>
+                                    <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@user.CreatedAt</MudText>
+                                </div>
+                                <div class="ml-auto">
+                                    <MudButton StartIcon="@Icons.Material.Outlined.RemoveCircleOutline" Color="Color.Secondary" ButtonType="ButtonType.Button" OnClick="@(() => DeleteConversation(user.Id))"></MudButton>
+                                </div>
+                            </div>
+                        </MudListItem>
+                    }
+                }
+            </MudList>
+        </div>
+        <MudButton OnClick="NewChatAsync" StartIcon="@Icons.Material.Outlined.AddComment" Color="Color.Secondary" ButtonType="ButtonType.Button">New Chat</MudButton>
+    </MudPaper>
+</div>
